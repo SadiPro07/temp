@@ -10,12 +10,14 @@ import { useAuth } from '../../context/AuthContext';
 import { getUserTimezone } from '../../utils/userTimezone';
 
 import  {SIGNIN_ENDPOINT} from "../../utils/endpoint"
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParams } from '../../navigations';
 
 const Login = () => {
   const { saveTokens, accessToken, refreshToken } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [deviceToken, setDeviceToken] = useState<string | undefined>(undefined);
   const deviceType = 'android'; // Change as needed for your application
 
@@ -32,7 +34,6 @@ const Login = () => {
     const FetchToken = async () => {
       const token = await getDeviceToken();
       token && setDeviceToken(token);
-      // saveTokens("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2ODgwMjQxLCJpYXQiOjE2OTY4Njk0NDEsImp0aSI6IjE5N2FkZjdiNmU4NjQwNjI4MDhkYzcxZjk0YzY2Mzc3IiwidXNlcl9pZCI6NDN9.lOJBy8pHqVm6Uk8m-ezwxyVoYD93ujp7lxtnf0QRWHM", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5Njk1NTg0MSwiaWF0IjoxNjk2ODY5NDQxLCJqdGkiOiIxMTZjOGZjMjJkMzM0ZWFkYjZkYzQzZjE2YWE2MzFiNiIsInVzZXJfaWQiOjQzfQ._tY2azYGoNJLebwdmkDM2LuIq1tY4ggS7T53HMR4E0M")
       RequestUserPermission();
       NotificatonListner();
     }
@@ -85,7 +86,7 @@ const Login = () => {
 
 
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
   const handleClick = () => {
     navigation.navigate("SignUp");
     // Alert.alert("ddd")
@@ -113,7 +114,7 @@ const Login = () => {
     <Text style={styles.forgotPassword}>
       Forgot password? Reset{' '}
       {/* Replace with your navigation action for the reset password screen */}
-      <Text style={styles.link} onPress={() => navigation.navigate('ResetPassword')}>
+      <Text style={styles.link}>
         here
       </Text>
     </Text>

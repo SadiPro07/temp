@@ -2,12 +2,17 @@
 import React, { useState } from 'react';
 import { Buffer } from 'buffer';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native'
+import { RouteProp, useNavigation } from '@react-navigation/native'
 import axios from 'axios';
 import { getUserTimezone } from '../../utils/userTimezone';
 import useDeviceToken from '../../hooks/useDeviceToken';
 // Replace with your React Native API endpoint
 import { SIGNUP_ENDPOINT } from "../../utils/endpoint";
+import { StackNavigationProp } from '@react-navigation/stack';
+import Verify from '../../screen/Auth/verify';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParams } from '../../navigations';
+
 
 const SignUp = () => {
   const [firstname, setFirstname] = useState('');
@@ -18,9 +23,9 @@ const SignUp = () => {
   const [deviceToken, setDeviceToken] = useState<string | undefined>(undefined);
   const deviceType = 'android'; // Change as needed for your application
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
-  useDeviceToken(setDeviceToken)
+  useDeviceToken({setDeviceToken})
 
   const handleFirstnameChange = (value: string) => setFirstname(value);
   const handleLastnameChange = (value: string) => setLastname(value);
@@ -52,7 +57,7 @@ const SignUp = () => {
           Alert.alert('User Registered');
           console.log("signup", response.data);
 
-          navigation.navigate('Verify', {user_email, email});
+          navigation.navigate('Verify', {email:email});
         } else {
           // Registration failed, handle the error
           Alert.alert('Registration failed. Please try again.');

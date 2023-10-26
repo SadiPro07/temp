@@ -9,9 +9,20 @@ import Singup from '../screen/Auth/singup';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import Home from '../screen/App/home';
 import Verify from '../screen/Auth/verify';
+import React from 'react';
+
+
+export type RootStackParams = {
+  Login,
+  SignUp,
+  Verify,
+  Home: {
+    email: string
+  }
+}
 
 // const Stack = createStackNavigator();
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParams>();
 
 const Navigation = () => {
   const {accessToken} =  useAuth()

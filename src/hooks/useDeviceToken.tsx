@@ -1,8 +1,12 @@
 /* eslint-disable */ 
 import { useEffect } from 'react';
-import RequestUserPermission,  { NotificatonListner, getDeviceToken } from '../utils/Notificaton';
+import RequestUserPermission, { NotificatonListner, getDeviceToken } from '../utils/Notificaton';
 
-function useDeviceTokenEffect(setDeviceToken) {
+type useDeviceTokenType = {
+  setDeviceToken: (token: string | undefined) => void
+}
+
+function useDeviceTokenEffect({setDeviceToken}: useDeviceTokenType) {
   useEffect(() => {
     const FetchToken = async () => {
       const token = await getDeviceToken();

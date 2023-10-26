@@ -6,8 +6,7 @@ import { REFRESH_ACCESS_TOKEN } from "../utils/endpoint";
 
 
 interface AuthContextType {
-    authToken: string | null;
-    accessToken: string | null,
+   accessToken: string | null,
     refreshToken: string | null,
     saveTokens: (accessToken: string, refreshToken: string) => void;
   clearTokens: () => void,
@@ -22,8 +21,8 @@ type AuthContextChildrenType = {
   };
 
 export const AuthProvider = ({children}: AuthContextChildrenType) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string>("");
+  const [refreshToken, setRefreshToken] = useState<string>("");
 
   useEffect(() => {
     // Load tokens from AsyncStorage when the component mounts
@@ -66,8 +65,8 @@ export const AuthProvider = ({children}: AuthContextChildrenType) => {
   const clearTokens = async () => {
     try {
       // Clear tokens from both state and AsyncStorage
-      setAccessToken(null);
-      setRefreshToken(null);
+      setAccessToken("");
+      setRefreshToken("");
 
       await AsyncStorage.removeItem('accessToken');
       await AsyncStorage.removeItem('refreshToken');
@@ -101,13 +100,6 @@ export const AuthProvider = ({children}: AuthContextChildrenType) => {
     }
   }
 
-  const contextValue = {
-    accessToken,
-    refreshToken,
-    saveTokens,
-    clearTokens,
-    refreshAccessToken
-  };
 
   return (
       <AuthContext.Provider value={{

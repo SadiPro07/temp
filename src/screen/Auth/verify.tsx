@@ -8,27 +8,29 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import axios from 'axios';
 import { getUserTimezone } from '../../utils/userTimezone';
 import useDeviceToken from '../../hooks/useDeviceToken';
 import { useAuth } from '../../context/AuthContext';
 import  {VERIFICATIONCODE_ENDPOINT}  from "../../utils/endpoint"
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParams } from '../../navigations';
 
 const Verify = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
+  // const route = useRoute<RouteProp<RootStackParams, "">();
   const { saveTokens } = useAuth();
-  const email = route.params?.email;
+  const {email} = route.params?.email;
     const [verificationCode, setVerificationCode] = useState('');
-    const [deviceToken, setDeviceToken] = useState("");
+    const [deviceToken, setDeviceToken] = useState<string | undefined>();
     const [resend, setResend] = useState(null);
     // const [email, setEmail] = useState('');
     const [error, setError] = useState('');
   const device_type = "android"
   console.log("user_email", route.params);
 
-    useDeviceToken(setDeviceToken)
+    useDeviceToken({setDeviceToken})
     
     const handleVerifyCodeChange = (value: string) => setVerificationCode(value);
 

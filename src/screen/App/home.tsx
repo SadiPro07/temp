@@ -4,16 +4,40 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator }
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
 import { useMeetings } from '../../utils/api';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParams } from '../../navigations';
+
+
+interface Meeting {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  is_scheduled: boolean;
+  start_time: string;
+  end_time: string;
+  // Add other fields from your server response
+}
+
+
+interface ExtendedMeeting extends Meeting {
+  meeting_time: number;
+  // Add additional fields here
+}
+
+
+
+
 const Home = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
   const { clearTokens } = useAuth();
   const { meetings, loading, error } = useMeetings();
-  const [upcomingMeetings, setUpcomingMeetings] = useState([]);
+  const [upcomingMeetings, setUpcomingMeetings] = useState<Meeting[]>([]);
   useEffect(() => {
     const now = new Date();
-    const upcoming = [];
+    const upcoming: ExtendedMeeting[] = [];
 
-    for (const meeting of meetings) {
+    for (const meeting  of meetings as ExtendedMeeting[]) {
       const startTime = new Date(meeting.start_time);
       const endTime = new Date(meeting.end_time);
 
@@ -36,7 +60,7 @@ const Home = () => {
     navigation.navigate('Login');
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item } : { item: Meeting }) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.title}</Text>
       <View style={styles.detailsContainer}>
@@ -61,7 +85,7 @@ const Home = () => {
       <FlatList
       data={upcomingMeetings}
       renderItem={renderItem}
-      keyExtractor={(item) => item} // Convert to string
+      keyExtractor={(item) => item.id.toString()} // Convert to string
       style={styles.cardList}
     />
     
