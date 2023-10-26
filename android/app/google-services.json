@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "204169071820",
+    "firebase_url": "https://ts-test-ba760-default-rtdb.firebaseio.com",
+    "project_id": "ts-test-ba760",
+    "storage_bucket": "ts-test-ba760.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204169071820:android:474225b938f50a1d060669",
+        "android_client_info": {
+          "package_name": "com.zortimet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204169071820-unqn6khneakegs7bbri0m77tpfttfgcq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zortimet",
+            "certificate_hash": "cc5ec925a01003e764e5faba695cba99cbbf4f42"
+          }
+        },
+        {
+          "client_id": "204169071820-6bf225qngijjo8qf5lhqq8mmc30um5cd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqPSq4gDTy6T71qekI4Ivw1mkIpuHShr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204169071820-36nb0evf5em85b2eb6uabe3hi5fhjgs3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
