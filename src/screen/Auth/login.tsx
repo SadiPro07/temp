@@ -1,5 +1,5 @@
 /* eslint-disable */ 
-import { View, Text, TouchableOpacity, Alert, TextInput, StyleSheet } from 'react-native'
+import { View, Text, NativeModules ,Button,TouchableOpacity, Alert, TextInput, StyleSheet, Platform } from 'react-native'
 import { Buffer } from 'buffer';
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
@@ -12,6 +12,8 @@ import { getUserTimezone } from '../../utils/userTimezone';
 import  {SIGNIN_ENDPOINT} from "../../utils/endpoint"
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParams } from '../../navigations';
+import { watchEvents } from 'react-native-watch-connectivity';
+const {LiveActivity} = NativeModules
 
 const Login = () => {
   const { saveTokens, accessToken, refreshToken } = useAuth();
@@ -19,7 +21,34 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [deviceToken, setDeviceToken] = useState<string | undefined>(undefined);
-  const deviceType = 'android'; // Change as needed for your application
+
+  const deviceType =  Platform.OS; // Change as needed for your application
+  console.log("type.ddddkkkddddk..", deviceType)
+
+ // const [messageFromWatch, setMessageFromWatch]
+ //= useState("waiting");
+
+ // listener for watch OS when receive message
+// const messageListener = () => watchEvents.on('message', (message) => {
+  //setMessageFromWatch(message.watchMessage)
+// })
+
+
+ //useEffect(() => {
+  //messageListener();
+ //}, []);
+
+
+
+
+  useEffect(() => {
+
+    if(deviceType === "ios"){
+      setDeviceToken("1234567890smssss");
+    }
+  }, [deviceType, deviceToken])
+  
+
 
   useEffect(() => {
     
@@ -31,13 +60,16 @@ const Login = () => {
   }, []);
 
   useEffect(() => {
-    const FetchToken = async () => {
+    if(deviceType == "android")
+{
+      const FetchToken = async () => {
       const token = await getDeviceToken();
       token && setDeviceToken(token);
       RequestUserPermission();
       NotificatonListner();
     }
     FetchToken();
+  }
   }, []);
 
 
@@ -91,15 +123,34 @@ const Login = () => {
     navigation.navigate("SignUp");
     // Alert.alert("ddd")
   }
+
+  const onStartActivity = () => {
+    LiveActivity.startActivity();
+  }
+
+
+  const onUpdateActivity = () => {
+    LiveActivity.updateActivity("update Text")
+  }
+
+  const onEndActivity = () => {
+    LiveActivity.endActivity();
+  }
+
+
   return (
     <View style={styles.container}>
     <Text style={styles.title}>Login</Text>
+    <Button title='Start the Activity' onPress={onStartActivity} />
+    <Button title='update the Activity' onPress={onUpdateActivity} />
+    <Button title='end the activity' onPress={onEndActivity}/>
     {error && <Text style={styles.error}>{error}</Text>}
     <TextInput
       style={styles.input}
       placeholder="Email"
       value={email}
       onChangeText={setEmail}
+      autoCapitalize='none'
     />
     <TextInput
       style={styles.input}
@@ -107,6 +158,7 @@ const Login = () => {
       value={password}
       onChangeText={setPassword}
       secureTextEntry
+      autoCapitalize='none'
     />
     <TouchableOpacity style={styles.button} onPress={handleSignIn}>
       <Text style={styles.buttonText}>Login</Text>

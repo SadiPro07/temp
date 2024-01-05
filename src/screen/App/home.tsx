@@ -79,6 +79,7 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Upcoming Meetings</Text>
+      
       {error && <Text style={{ flex: 1, fontSize: 20, color: "red" }}>Something Went Wrong</Text>
       }
       {loading ? <ActivityIndicator style={{flex:1}} size={'large'} /> :
